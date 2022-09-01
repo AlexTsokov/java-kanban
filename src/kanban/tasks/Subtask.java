@@ -1,11 +1,14 @@
 package kanban.tasks;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Subtask extends Task {
 
     private int epicId;
+    protected ArrayList<Integer> subtaskIds = new ArrayList<>();
 
-    public Subtask(int iD, String name, String detail, String status, int epicId) {
-        super(iD, name, detail, status);
+    public Subtask(String name, String detail, String status, int epicId) {
+        super(name, detail, status);
         this.epicId = epicId;
     }
 
@@ -14,6 +17,20 @@ public class Subtask extends Task {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subtask)) return false;
+        Subtask subtask = (Subtask) o;
+        return getId() == subtask.getId() && Objects.equals(getName(), subtask.getName()) && Objects.equals(getDetail(),
+                subtask.getDetail()) && Objects.equals(getStatus(), subtask.getStatus()) && Objects.equals(getEpicId(),
+                subtask.getEpicId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getDetail(), getStatus(), getEpicId());
+    }
 
 }
 

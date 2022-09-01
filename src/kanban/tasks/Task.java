@@ -1,24 +1,25 @@
 package kanban.tasks;
-
 import java.util.Objects;
-
 public class Task {
 
-    private int iD;
+    private int id;
     private String name;
     private String detail;
     private String status;
 
-    public Task(int iD, String name, String detail, String status) {
-        this.iD = iD;
+    public Task(String name, String detail, String status) {
+        //this.id = id;
         this.name = name;
         this.detail = detail;
         this.status = status;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public int getiD() {
-        return iD;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -42,19 +43,19 @@ public class Task {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return getiD() == task.getiD() && Objects.equals(getName(), task.getName()) && Objects.equals(getDetail(),
+        return getId() == task.getId() && Objects.equals(getName(), task.getName()) && Objects.equals(getDetail(),
                 task.getDetail()) && Objects.equals(getStatus(), task.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getiD(), getName(), getDetail(), getStatus());
+        return Objects.hash(getId(), getName(), getDetail(), getStatus());
     }
 
     @Override
     public String toString() {
 
-        return "Task{" + "ID=" + iD +
+        return "Task{" + "ID=" + id +
                 ", name='" + name +
                 ", detail='" + detail +
                 ", status=" + status +
