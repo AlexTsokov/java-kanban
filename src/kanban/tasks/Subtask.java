@@ -1,13 +1,11 @@
 package kanban.tasks;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Subtask extends Task {
 
     private int epicId;
-    protected ArrayList<Integer> subtaskIds = new ArrayList<>();
 
-    public Subtask(String name, String detail, String status, int epicId) {
+    public Subtask(String name, String detail, Enum status, int epicId) {
         super(name, detail, status);
         this.epicId = epicId;
     }

@@ -1,14 +1,14 @@
 package kanban.tasks;
 import java.util.Objects;
+
 public class Task {
 
     private int id;
     private String name;
     private String detail;
-    private String status;
+    private Enum status;
 
-    public Task(String name, String detail, String status) {
-        //this.id = id;
+    public Task(String name, String detail, Enum status) {
         this.name = name;
         this.detail = detail;
         this.status = status;
@@ -30,11 +30,11 @@ public class Task {
         return detail;
     }
 
-    public String getStatus() {
+    public Enum getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Enum status) {
         this.status = status;
     }
 

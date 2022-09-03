@@ -1,9 +1,25 @@
 package kanban.tasks;
+import java.util.ArrayList;
 import java.util.Objects;
 public class Epic extends Task {
 
-    public Epic(String name, String detail, String status) {
+    protected ArrayList<Integer> subtaskIds = new ArrayList<>();
+
+    public Epic(String name, String detail, Enum status) {
         super(name, detail, status);
+    }
+
+
+    public void addSubtaskIds(int id) {
+        subtaskIds.add(id);
+    }
+
+    public void removeSubtaskIds(int id) {
+        subtaskIds.remove(id);
+    }
+
+    public ArrayList<Integer> getSubtaskIds() {
+        return subtaskIds;
     }
 
     @Override
@@ -19,8 +35,6 @@ public class Epic extends Task {
     public int hashCode() {
         return Objects.hash(getId(), getName(), getDetail(), getStatus());
     }
-
-
 
 }
 
