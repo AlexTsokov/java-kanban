@@ -1,7 +1,10 @@
 package kanban.manager;
+
 import kanban.tasks.Epic;
 import kanban.tasks.Subtask;
 import kanban.tasks.Task;
+import kanban.tasks.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -9,21 +12,9 @@ import java.util.HashMap;
 public class Manager {
 
     private int taskId = 0;
-    private TaskStatus taskStatus;
-
-    public enum TaskStatus {
-        NEW,
-        IN_PROGRESS,
-        DONE
-    }
-
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subTasks = new HashMap<>();
-
-    public TaskStatus getTaskStatus() { // получение статуса задачи
-        return taskStatus;
-    }
 
     public ArrayList<Task> getTasks() { // Получение списка всех задач.
         return new ArrayList<>(tasks.values());
@@ -46,7 +37,10 @@ public class Manager {
     }
 
     public void removeSubtaskById(int id) { // удаление сабтаска по id
+        int epicId = subTasks.get(id).getEpicId();
+        epics.get(epicId).removeSubtaskIds(id);
         subTasks.remove(id);
+        updateEpicStatus(epicId);
     }
 
     public void deleteAnyTypeAllTasks() { // удаление всех задач любого типа
@@ -84,11 +78,11 @@ public class Manager {
             epic.setStatus(TaskStatus.NEW);
             return;
         }
-        Enum status = null;
+        TaskStatus status = null;
         for (int id : subs) {
             final Subtask subtask = subTasks.get(id);
             if (status == null) {
-                status = subtask.getStatus();
+                status = (TaskStatus) subtask.getStatus();
                 continue;
             }
             if (status.equals(subtask.getStatus())
@@ -125,7 +119,8 @@ public class Manager {
         if (savedTask == null) {
             return;
         }
-        tasks.put(id, subTask);
+        subTasks.put(id, subTask);
+        updateEpicStatus(subTask.getEpicId());
     }
 
     public int addNewTask(Task task) {

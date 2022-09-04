@@ -1,6 +1,8 @@
 package kanban.tasks;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
 public class Epic extends Task {
 
     protected ArrayList<Integer> subtaskIds = new ArrayList<>();
@@ -15,7 +17,11 @@ public class Epic extends Task {
     }
 
     public void removeSubtaskIds(int id) {
-        subtaskIds.remove(id);
+        for (int i = 0; i < subtaskIds.size(); i++) {
+            if (subtaskIds.get(i).equals(id)) {
+                subtaskIds.remove(i);
+            }
+        }
     }
 
     public ArrayList<Integer> getSubtaskIds() {
