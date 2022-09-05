@@ -1,4 +1,6 @@
-import kanban.manager.Manager;
+import kanban.manager.InMemoryTaskManager;
+import kanban.manager.Managers;
+import kanban.manager.TaskManager;
 import kanban.tasks.Epic;
 import kanban.tasks.Subtask;
 import kanban.tasks.Task;
@@ -8,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Manager manager = new Manager();
+        TaskManager manager = new Managers().getDefault();
 
         Task task1 = new Task("Приготовить уху", "Приготовить суп из пойманной рыбы", TaskStatus.NEW);
         Epic epic1 = new Epic("Попить чай", "Приготовить чай и выпить его", TaskStatus.NEW);
@@ -35,10 +37,15 @@ public class Main {
         System.out.println(manager.getSubTasks());
         System.out.println(manager.getCurrentEpicSubTasks(epic1.getId()));
         System.out.println(manager.getSubtaskIds(epic1.getId()));
-        System.out.println(manager.getEpic(subTask1.getEpicId()));
-        manager.removeSubtaskById(subTask1.getId()); // проверка удаления сабтаска с номером 4, проверка изменения статуса эпика
-        System.out.println(manager.getSubtaskIds(epic1.getId()));
-        System.out.println(manager.getEpic(subTask1.getEpicId()));
+
+        manager.getEpic(2);
+        manager.getEpic(3);
+        manager.getEpic(2);
+        manager.getTask(1);
+        manager.getSubTask(4);
+        manager.getSubTask(5);
+        manager.getTask(1);
+        System.out.println(InMemoryTaskManager.historyManager.getHistory());
 
     }
 }

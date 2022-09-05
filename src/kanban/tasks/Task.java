@@ -6,9 +6,9 @@ public class Task {
     private int id;
     private String name;
     private String detail;
-    private Enum status;
+    private TaskStatus status;
 
-    public Task(String name, String detail, Enum status) {
+    public Task(String name, String detail, TaskStatus status) {
         this.name = name;
         this.detail = detail;
         this.status = status;
@@ -30,11 +30,11 @@ public class Task {
         return detail;
     }
 
-    public Enum getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Enum status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
