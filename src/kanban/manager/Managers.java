@@ -2,7 +2,8 @@ package kanban.manager;
 
 
 public class Managers extends InMemoryHistoryManager {
-    public TaskManager getDefault() {
+
+    public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
 

@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = new Managers().getDefault();
+        TaskManager manager = Managers.getDefault();
 
         Task task1 = new Task("Приготовить уху", "Приготовить суп из пойманной рыбы", TaskStatus.NEW);
         Epic epic1 = new Epic("Попить чай", "Приготовить чай и выпить его", TaskStatus.NEW);
@@ -45,7 +45,7 @@ public class Main {
         manager.getSubTask(4);
         manager.getSubTask(5);
         manager.getTask(1);
-        System.out.println(InMemoryTaskManager.historyManager.getHistory());
+        System.out.println(manager.getHistoryManager().getHistory());
 
     }
 }

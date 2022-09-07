@@ -12,10 +12,10 @@ import java.util.HashMap;
 public class InMemoryTaskManager implements TaskManager {
 
     private int taskId = 0;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subTasks = new HashMap<>();
-    public static HistoryManager historyManager = new Managers().getDefaultHistory();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subTasks = new HashMap<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public Task getTask(int id) { // получение таска по id
@@ -171,6 +171,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Integer> getSubtaskIds(int id) { // ввод списка id всех сабтасков эпика
         return epics.get(id).getSubtaskIds();
+    }
+
+    @Override
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 
 }

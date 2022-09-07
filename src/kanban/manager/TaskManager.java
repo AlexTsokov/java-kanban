@@ -1,7 +1,9 @@
 package kanban.manager;
+
 import kanban.tasks.Epic;
 import kanban.tasks.Subtask;
 import kanban.tasks.Task;
+
 import java.util.ArrayList;
 
 public interface TaskManager {
@@ -44,5 +46,6 @@ public interface TaskManager {
 
     ArrayList<Integer> getSubtaskIds(int id);
 
+    HistoryManager getHistoryManager();
 }
 
