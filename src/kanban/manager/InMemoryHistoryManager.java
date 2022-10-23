@@ -1,29 +1,60 @@
 package kanban.manager;
 
-import kanban.tasks.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import kanban.tasks.Task;
+
+import java.util.*;
+
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private final List<Task> history = new ArrayList<>();
-    private int historyListSize = 10;
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
+    private final LinkedList<Node> customLinkedList = new LinkedList<>();
+    private Node<Task> last;
+    private Node<Task> first;
+
+    private void linkedLast(Task task) {
+        final Node<Task> newNode = new Node<>(task, last, null);
+        if (first == null) {
+            first = newNode;
+        } else {
+            last.next = newNode;
+        }
+        last = newNode;
+    }
+
+    private void removeNode(Node node) {
+        while (customLinkedList.contains(node)) {
+            customLinkedList.remove(node);
+        }
+    }
+
+    private List<Task> getTasks() {
+        List list = new ArrayList<>();
+        for (Node node : customLinkedList) {
+            list.add(node.task);
+        }
+        return list;
+    }
 
     @Override
     public void add(Task task) {
-        if (history.size() > historyListSize) {
-            history.remove(0);
-        }
-        history.add(task);
+        removeNode(nodeMap.get(task.getId()));
+        linkedLast(task);
+        customLinkedList.add(last);
+        nodeMap.put(task.getId(), last);
     }
 
-    public void setHistoryListSize(int historyListSize) {
-        this.historyListSize = historyListSize;
+    @Override
+    public void remove(int id) {
+        removeNode(nodeMap.get(id));
+        nodeMap.remove(id);
     }
 
     @Override
     public List<Task> getHistory() {
-        return history;
+        return getTasks();
     }
+
 }

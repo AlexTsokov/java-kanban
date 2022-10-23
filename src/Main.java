@@ -1,4 +1,3 @@
-import kanban.manager.InMemoryTaskManager;
 import kanban.manager.Managers;
 import kanban.manager.TaskManager;
 import kanban.tasks.Epic;
@@ -32,19 +31,21 @@ public class Main {
         manager.addNewSubtask(subTask4);
         manager.addNewSubtask(subTask5);
 
-        System.out.println(manager.getTasks());
-        System.out.println(manager.getEpics());
-        System.out.println(manager.getSubTasks());
-        System.out.println(manager.getCurrentEpicSubTasks(epic1.getId()));
-        System.out.println(manager.getSubtaskIds(epic1.getId()));
-
+        manager.getTask(1);
+        manager.getTask(1);
+        manager.getTask(1);
+        manager.getTask(1);
+        manager.getTask(1);
         manager.getEpic(2);
+        manager.getTask(1);
         manager.getEpic(3);
         manager.getEpic(2);
-        manager.getTask(1);
         manager.getSubTask(4);
         manager.getSubTask(5);
-        manager.getTask(1);
+
+        System.out.println(manager.getHistoryManager().getHistory());
+        manager.removeTaskById(1);
+        manager.removeEpicById(2);
         System.out.println(manager.getHistoryManager().getHistory());
 
     }
