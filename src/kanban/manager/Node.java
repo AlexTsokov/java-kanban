@@ -3,8 +3,8 @@ package kanban.manager;
 public class Node<Task> {
 
     Task task;
-    Node next;
-    Node prev;
+    Node<Task> next;
+    Node<Task> prev;
 
 
     public Node(Task task, Node<Task> prev, Node<Task> next) {

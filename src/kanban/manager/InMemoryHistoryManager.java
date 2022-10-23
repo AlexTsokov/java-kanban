@@ -9,8 +9,8 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private final Map<Integer, Node> nodeMap = new HashMap<>();
-    private final LinkedList<Node> customLinkedList = new LinkedList<>();
+    private final Map<Integer, Node<Task>> nodeMap = new HashMap<>();
+    private final LinkedList<Node<Task>> customLinkedList = new LinkedList<>();
     private Node<Task> last;
     private Node<Task> first;
 
@@ -24,15 +24,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         last = newNode;
     }
 
-    private void removeNode(Node node) {
+    private void removeNode(Node<Task> node) {
         while (customLinkedList.contains(node)) {
             customLinkedList.remove(node);
         }
     }
 
     private List<Task> getTasks() {
-        List list = new ArrayList<>();
-        for (Node node : customLinkedList) {
+        List<Task> list = new ArrayList<>();
+        for (Node<Task> node : customLinkedList) {
             list.add(node.task);
         }
         return list;
