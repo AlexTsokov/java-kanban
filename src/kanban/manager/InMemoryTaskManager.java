@@ -24,13 +24,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getEpic(int id) { // получение эпика по id
+    public Epic getEpic(int id) { // получение эпика по id
         historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
-    public Task getSubTask(int id) { // получение сабтаска по id
+    public Subtask getSubTask(int id) { // получение сабтаска по id
         historyManager.add(subTasks.get(id));
         return subTasks.get(id);
     }
@@ -41,12 +41,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getEpics() { // Получение списка всех эпиков.
+    public ArrayList<Epic> getEpics() { // Получение списка всех эпиков.
         return new ArrayList<>(epics.values());
     }
 
     @Override
-    public ArrayList<Task> getSubTasks() { // Получение списка всех подзадач.
+    public ArrayList<Subtask> getSubTasks() { // Получение списка всех подзадач.
         return new ArrayList<>(subTasks.values());
     }
 

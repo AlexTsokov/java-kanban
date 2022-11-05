@@ -14,6 +14,11 @@ public class Subtask extends Task {
         return epicId;
     }
 
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.SUB_TASK;
+    }
+
 
     @Override
     public boolean equals(Object o) {

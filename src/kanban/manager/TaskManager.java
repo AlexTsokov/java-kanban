@@ -4,15 +4,16 @@ import kanban.tasks.Epic;
 import kanban.tasks.Subtask;
 import kanban.tasks.Task;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public interface TaskManager {
 
     ArrayList<Task> getTasks();
 
-    ArrayList<Task> getEpics();
+    ArrayList<Epic> getEpics();
 
-    ArrayList<Task> getSubTasks();
+    ArrayList<Subtask> getSubTasks();
 
     void removeTaskById(int id);
 
@@ -24,9 +25,10 @@ public interface TaskManager {
 
     Task getTask(int id);
 
-    Task getEpic(int id);
+    Epic getEpic(int id);
 
-    Task getSubTask(int id);
+    Subtask getSubTask(int id);
+
 
     ArrayList<Subtask> getCurrentEpicSubTasks(int id);
 
