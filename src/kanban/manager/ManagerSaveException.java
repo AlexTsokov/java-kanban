@@ -2,7 +2,7 @@ package kanban.manager;
 
 import java.io.IOException;
 
-public class ManagerSaveException extends IOException {
+public class ManagerSaveException extends RuntimeException {
 
     public ManagerSaveException() {
     }
@@ -15,6 +15,6 @@ public class ManagerSaveException extends IOException {
         super(cause);
     }
 
-    public ManagerSaveException(String s, IOException e) {
+    public ManagerSaveException(String s, RuntimeException e) {
     }
 }
