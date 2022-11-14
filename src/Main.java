@@ -1,5 +1,4 @@
 import kanban.manager.FileBackedTasksManager;
-import kanban.manager.Managers;
 import kanban.manager.TaskManager;
 import kanban.tasks.Epic;
 import kanban.tasks.Subtask;
@@ -12,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = Managers.getDefaultFile();
+        TaskManager manager = FileBackedTasksManager.getDefaultFile();
 
         manager.addNewTask(new Task("Приготовить уху", "Приготовить суп из пойманной рыбы", TaskStatus.NEW));
         manager.addNewEpic(new Epic("Попить чай", "Приготовить чай и выпить его", TaskStatus.NEW));
@@ -33,7 +32,7 @@ public class Main {
         System.out.println(manager.getHistoryManager().getHistory());
 
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile
-                (new File("C:/Users/Alex/dev/java-kanban/src/resources/tasks.csv"));
+                (new File("src/resources/tasks.csv"));
 
         System.out.println(fileBackedTasksManager.getTasks());
         System.out.println(fileBackedTasksManager.getEpics());

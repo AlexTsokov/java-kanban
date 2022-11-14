@@ -12,6 +12,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
     public List<Integer> restoredHistory = new ArrayList<>();
 
+    public static FileBackedTasksManager getDefaultFile() {
+        return new FileBackedTasksManager(new File("src/resources/tasks.csv"));
+    }
+
     public FileBackedTasksManager(File file) {
         this.file = file;
     }

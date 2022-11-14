@@ -5,4 +5,4 @@ id, type, name, status, description, epic
 4,SUB_TASK,Сахар,NEW,Положить сахар и размешать,2
 5,SUB_TASK,Лимон,NEW,Положить дольку лимона,2
 
-
+2,1,4,3
