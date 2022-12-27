@@ -1,4 +1,7 @@
 package kanban.tasks;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,6 +10,8 @@ public class Task {
     private String name;
     private String detail;
     private TaskStatus status;
+    private LocalDateTime startTime;
+    private int duration;
 
     public Task(String name, String detail, TaskStatus status) {
         this.name = name;
@@ -14,6 +19,25 @@ public class Task {
         this.status = status;
     }
 
+    public Task(String name, String detail, TaskStatus status, String startTime, Integer duration) {
+        this.name = name;
+        this.detail = detail;
+        this.status = status;
+        this.startTime = LocalDateTime.parse(startTime);
+        this.duration = duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plusMinutes(duration);
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -43,6 +67,14 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,6 +96,8 @@ public class Task {
                 ", name='" + name +
                 ", detail='" + detail +
                 ", status=" + status +
+                ", start time=" + startTime +
+                ", duration=" + duration +
                 '}';
     }
 

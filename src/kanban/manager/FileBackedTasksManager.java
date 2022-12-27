@@ -4,6 +4,7 @@ import kanban.tasks.*;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -68,13 +69,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public String toString(Task task) {
         return task.getId() + "," + task.getTaskType() + "," + task.getName() + "," +
-                task.getStatus() + "," + task.getDetail();
+                task.getStatus() + "," + task.getDetail() + "," + task.getStartTime() + "," + task.getDuration();
     }
 
     private void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
 
-            bufferedWriter.write("id, type, name, status, description, epic");
+            bufferedWriter.write("id, type, name, status, description, start time, duration, epicID");
             bufferedWriter.newLine();
 
             Collection<Task> values = getTasks();
@@ -152,10 +153,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Integer id = Integer.valueOf(values[0]);
         TaskType type = TaskType.valueOf(values[1]);
         TaskStatus status = TaskStatus.valueOf(values[3]);
+        String startTime = values[5];
+        Integer duration = Integer.valueOf(values[6]);
 
         switch (type) {
             case TASK:
-                Task task = new Task(name, detail, status);
+                Task task = new Task(name, detail, status, startTime, duration);
                 task.setId(id);
                 return task;
             case EPIC:
@@ -163,8 +166,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 epic.setId(id);
                 return epic;
             case SUB_TASK:
-                Integer epicId = Integer.valueOf(values[5]);
-                Subtask subtask = new Subtask(name, detail, status, epicId);
+                Integer epicId = Integer.valueOf(values[7]);
+                Subtask subtask = new Subtask(name, detail, status, startTime, duration, epicId);
                 subtask.setId(id);
                 return subtask;
             default:

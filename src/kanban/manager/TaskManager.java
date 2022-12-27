@@ -5,7 +5,9 @@ import kanban.tasks.Subtask;
 import kanban.tasks.Task;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -49,5 +51,13 @@ public interface TaskManager {
     ArrayList<Integer> getSubtaskIds(int id);
 
     HistoryManager getHistoryManager();
+
+    TreeSet<Task> getPrioritizedTasks();
+
+    int getEpicDuration(int id);
+
+    LocalDateTime epicEndTime(int id);
+
+    LocalDateTime epicStartTime(int id);
 }
 

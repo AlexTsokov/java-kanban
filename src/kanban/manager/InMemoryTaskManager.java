@@ -5,9 +5,8 @@ import kanban.tasks.Subtask;
 import kanban.tasks.Task;
 import kanban.tasks.TaskStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -16,6 +15,45 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final static Comparator<Task> comparator = Comparator
+            .comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(Task::getId);
+    private final TreeSet<Task> prioritizedTasks = new TreeSet<>(comparator);
+
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        prioritizedTasks.addAll(getTasks());
+        prioritizedTasks.addAll(getSubTasks());
+        return prioritizedTasks;
+    }
+
+    @Override
+    public int getEpicDuration(int id) {
+        ArrayList<Subtask> subtasks = getCurrentEpicSubTasks(id);
+        int duration = 0;
+        if (subtasks != null) {
+            for (Subtask sub : subtasks) {
+                duration += sub.getDuration();
+            }
+        }
+        return duration;
+    }
+
+    @Override
+    public LocalDateTime epicEndTime(int id) {
+        return epicStartTime(id).plusMinutes(getEpicDuration(id));
+    }
+
+    @Override
+    public LocalDateTime epicStartTime(int id) {
+        ArrayList<Subtask> subtasks = getCurrentEpicSubTasks(id);
+        if (subtasks != null) {
+            TreeSet<Subtask> prioritizedSubTasks = new TreeSet<>(comparator);
+            prioritizedSubTasks.addAll(subtasks);
+            return prioritizedSubTasks.first().getStartTime();
+        }
+        return null;
+    }
 
     @Override
     public Task getTask(int id) { // получение таска по id
@@ -171,6 +209,8 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.setId(id);
         subTasks.put(id, subtask);
         epics.get(subtask.getEpicId()).addSubtaskIds(id);
+        epics.get(subtask.getEpicId()).setStartTime(epicStartTime(subtask.getEpicId()));
+        epics.get(subtask.getEpicId()).setDuration(getEpicDuration(subtask.getEpicId()));
         updateEpicStatus(subtask.getEpicId());
         return id;
     }
