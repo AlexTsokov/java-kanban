@@ -165,7 +165,7 @@ public abstract class TaskManagerTest<T extends TaskManager> { // Все общ�
     @DisplayName("Проверка, что Сабтаск относится к Эпику")
     void subtaskShouldHaveEpic() {
         initEpicWithSubtasks();
-        Subtask subtaskToCheck = new Subtask("Лимон", "Добавить лимон", NEW, epic1.getId());
+        Subtask subtaskToCheck = new Subtask("Лимон", "Добавить лимон", NEW, "2021-12-20T23:00:00", 60, 1);
         taskManager.addNewSubtask(subtaskToCheck);
         assertAll(
                 () -> assertEquals(3, taskManager.getCurrentEpicSubTasks(epic1.getId()).size()),

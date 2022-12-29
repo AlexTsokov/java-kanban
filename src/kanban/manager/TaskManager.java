@@ -4,10 +4,8 @@ import kanban.tasks.Epic;
 import kanban.tasks.Subtask;
 import kanban.tasks.Task;
 
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.TreeSet;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -31,7 +29,6 @@ public interface TaskManager {
 
     Subtask getSubTask(int id);
 
-
     ArrayList<Subtask> getCurrentEpicSubTasks(int id);
 
     void updateEpicStatus(int epicId);
@@ -52,12 +49,7 @@ public interface TaskManager {
 
     HistoryManager getHistoryManager();
 
-    TreeSet<Task> getPrioritizedTasks();
+    Set<Task> getPrioritizedTasks();
 
-    int getEpicDuration(int id);
-
-    LocalDateTime epicEndTime(int id);
-
-    LocalDateTime epicStartTime(int id);
 }
 

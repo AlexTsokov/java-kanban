@@ -1,5 +1,4 @@
 package kanban.tasks;
-import java.util.Objects;
 
 public class Subtask extends Task {
 
@@ -24,21 +23,22 @@ public class Subtask extends Task {
         return TaskType.SUB_TASK;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Subtask)) return false;
+        if (!super.equals(o)) return false;
+
         Subtask subtask = (Subtask) o;
-        return getId() == subtask.getId() && Objects.equals(getName(), subtask.getName()) && Objects.equals(getDetail(),
-                subtask.getDetail()) && Objects.equals(getStatus(), subtask.getStatus()) && Objects.equals(getEpicId(),
-                subtask.getEpicId());
+
+        return getEpicId() == subtask.getEpicId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getDetail(), getStatus(), getEpicId());
+        int result = super.hashCode();
+        result = 31 * result + getEpicId();
+        return result;
     }
-
 }
 

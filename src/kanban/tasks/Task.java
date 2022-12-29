@@ -1,6 +1,5 @@
 package kanban.tasks;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -80,27 +79,27 @@ public class Task {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return getId() == task.getId() && Objects.equals(getName(), task.getName()) && Objects.equals(getDetail(),
-                task.getDetail()) && Objects.equals(getStatus(), task.getStatus());
+        return getId() == task.getId() && getDuration() == task.getDuration() && getName().equals(task.getName())
+                && getDetail().equals(task.getDetail()) && getStatus() == task.getStatus()
+                && getStartTime().equals(task.getStartTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getDetail(), getStatus());
+        return Objects.hash(getId(), getName(), getDetail(), getStatus(), getStartTime(), getDuration());
     }
 
     @Override
     public String toString() {
-
-        return "Task{" + "ID=" + id +
-                ", name='" + name +
-                ", detail='" + detail +
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", detail='" + detail + '\'' +
                 ", status=" + status +
-                ", start time=" + startTime +
+                ", startTime=" + startTime +
                 ", duration=" + duration +
                 '}';
     }
-
 }
 
 
