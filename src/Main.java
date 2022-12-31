@@ -41,8 +41,8 @@ public class Main {
 //        System.out.println(fileBackedTasksManager.getSubTasks());
 //        System.out.println(fileBackedTasksManager.restoredHistory);
         TaskManager manager = Managers.getDefault();
-        Task task1 = new Task("25", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2022-12-21T23:20:22", 60);
-        Task task2 = new Task("24", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2022-12-21T23:20:23", 10);
+        Task task1 = new Task("25", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2022-12-21T20:00:00", 60);
+        Task task2 = new Task("24", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2022-12-21T21:00:00", 10);
         Task task3 = new Task("21", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2022-12-21T21:22:21", 20);
         manager.addNewTask(task1);
         manager.addNewTask(task2);
@@ -52,12 +52,15 @@ public class Main {
         manager.addNewSubtask(new Subtask("Заварка", "Заварить заварку в чайничке", TaskStatus.DONE, "2022-11-21T20:20:00", 15, epic1.getId()));
         manager.addNewSubtask(new Subtask("Сахар", "Положить сахар и размешать", TaskStatus.NEW, "2022-11-21T21:15:00", 10, epic1.getId()));
         manager.addNewSubtask(new Subtask("Лимон", "Положить лимон", TaskStatus.NEW, "2022-11-21T21:25:00", 25, epic1.getId()));
+        manager.addNewSubtask(new Subtask("Лимон", "Положить лимон", TaskStatus.NEW, "2022-11-21T22:25:00", 25, epic1.getId()));
+        System.out.println(manager.getTasks());
         System.out.println(epic1.getStartTime());
         System.out.println(epic1.getEpicEndTime());
-        System.out.println(epic1.getEpicDuration(manager.getCurrentEpicSubTasks(epic1.getId())));
+        System.out.println(manager.getEpicDuration(epic1.getId()));
         manager.removeSubtaskById(7);
         System.out.println(epic1.getStartTime());
         System.out.println(epic1.getEpicEndTime());
-        System.out.println(epic1.getEpicDuration(manager.getCurrentEpicSubTasks(epic1.getId())));
+        System.out.println(manager.getEpicDuration(epic1.getId()));
+        System.out.println(epic1.getDuration());
     }
 }

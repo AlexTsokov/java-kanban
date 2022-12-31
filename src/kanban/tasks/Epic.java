@@ -73,25 +73,6 @@ public class Epic extends Task {
         return null;
     }
 
-    public int getEpicDuration(ArrayList<Subtask> subtasks) {
-        int duration = 0;
-        if (subtasks != null) {
-            for (Subtask sub : subtasks) {
-                duration += sub.getDuration();
-            }
-        }
-        return duration;
-    }
-
-    public void updateEpicStartAndEndTime(Subtask subtask) {
-        if (getStartTime().isAfter(subtask.getStartTime())) {
-            setStartTime(subtask.getStartTime());
-        }
-        if (subtask.getStartTime().isAfter(getEndTime())) {
-            setEpicEndTime(subtask.getStartTime().plusMinutes(subtask.getDuration()));
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

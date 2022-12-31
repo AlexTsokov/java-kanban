@@ -10,6 +10,7 @@ public class Task {
     private String detail;
     private TaskStatus status;
     private LocalDateTime startTime;
+    private LocalDateTime endtime;
     private int duration;
 
     public Task(String name, String detail, TaskStatus status) {
@@ -36,6 +37,10 @@ public class Task {
 
     public LocalDateTime getEndTime() {
         return startTime.plusMinutes(duration);
+    }
+
+    public void setEndTime() {
+        endtime = getEndTime();
     }
 
     public void setId(int id) {
@@ -73,6 +78,7 @@ public class Task {
     public int getDuration() {
         return duration;
     }
+
 
     @Override
     public boolean equals(Object o) {

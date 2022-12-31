@@ -51,5 +51,6 @@ public interface TaskManager {
 
     Set<Task> getPrioritizedTasks();
 
+    int getEpicDuration(int id);
 }
 

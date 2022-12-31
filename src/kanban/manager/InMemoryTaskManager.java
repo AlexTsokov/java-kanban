@@ -78,9 +78,9 @@ public class InMemoryTaskManager implements TaskManager {
         epic.removeSubtaskIds(id);
         subTasks.remove(id);
         historyManager.remove(id);
-        if (getCurrentEpicSubTasks(epic.getId()) != null) {
-            epic.setStartTime(epic.epicStartTime(getCurrentEpicSubTasks(epic.getId())));
-            epic.setEpicEndTime(epic.epicEndTime(getCurrentEpicSubTasks(epic.getId())));
+        ArrayList<Subtask> subs = getCurrentEpicSubTasks(epic.getId());
+        if (!subs.isEmpty()) {
+            updateEpicStartEndTimeAndDuration(epic.getId());
             updateEpicStatus(epicId);
         } else removeEpicById(epic.getId());
     }
@@ -150,25 +150,29 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubTask(Subtask subTask) { // Обновление сабтаска.
-        final int id = subTask.getId();
-        final Subtask savedTask = subTasks.get(id);
-        int epicId = subTask.getEpicId();
-        if (savedTask == null) {
-            return;
+    public void updateSubTask(Subtask subtask) { // Обновление сабтаска.
+        if (validateTaskAndSubtaskTime(subtask)) {
+            final int id = subtask.getId();
+            final Subtask savedTask = subTasks.get(id);
+            int epicId = subtask.getEpicId();
+            if (savedTask == null) {
+                return;
+            }
+            subTasks.put(id, subtask);
+            updateEpicStatus(epicId);
+            updateEpicStartEndTimeAndDuration(epicId);
         }
-        subTasks.put(id, subTask);
-        updateEpicStatus(epicId);
-        epics.get(epicId).updateEpicStartAndEndTime(subTask);
     }
 
     @Override
     public int addNewTask(Task task) {
         final int id = ++taskId;
-        if (!validateTaskTime(task)) {
+        task.setEndTime();
+        if (validateTaskAndSubtaskTime(task)) {
             task.setId(id);
             tasks.put(id, task);
-        } return id;
+        }
+        return id;
     }
 
     @Override
@@ -182,16 +186,24 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addNewSubtask(Subtask subtask) {
         final int id = ++taskId;
-        if (!validateSubtaskTime(subtask)) {
+        subtask.setEndTime();
+        if (validateTaskAndSubtaskTime(subtask)) {
             subtask.setId(id);
             subTasks.put(id, subtask);
             Epic subEpic = epics.get(subtask.getEpicId());
             subEpic.addSubtaskIds(id);
-            subEpic.setStartTime(subEpic.epicStartTime(getCurrentEpicSubTasks(subEpic.getId())));
-            subEpic.setEpicEndTime(subEpic.epicEndTime(getCurrentEpicSubTasks(subEpic.getId())));
+            updateEpicStartEndTimeAndDuration(subEpic.getId());
             updateEpicStatus(subEpic.getId());
         }
         return id;
+    }
+
+    private void updateEpicStartEndTimeAndDuration(int id) { // обновление времени и длительности эпика
+        Epic subEpic = epics.get(id);
+        ArrayList<Subtask> subs = getCurrentEpicSubTasks(id);
+        subEpic.setStartTime(subEpic.epicStartTime(subs));
+        subEpic.setEpicEndTime(subEpic.epicEndTime(subs));
+        subEpic.setDuration(getEpicDuration(id));
     }
 
     @Override
@@ -204,16 +216,35 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
-    public boolean validateTaskTime(Task newTask) {
-        for (Task task : tasks.values())
-            return newTask.getStartTime().isEqual(task.getStartTime());
+    public boolean validateTaskAndSubtaskTime(Task task) {
+        if (getPrioritizedTasks().isEmpty())
+            return true;
+        for (Task existTask : getPrioritizedTasks()) {
+            if (existTask.getStartTime().isBefore(task.getStartTime())) {
+                if (existTask.getEndTime().isBefore(task.getStartTime())
+                        || existTask.getEndTime().equals(task.getStartTime())) {
+                    return true;
+                }
+            }
+            if (task.getStartTime().isBefore(existTask.getStartTime())) {
+                if (task.getEndTime().isBefore(existTask.getStartTime())
+                        || task.getEndTime().equals(existTask.getStartTime())) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
-    public boolean validateSubtaskTime(Subtask newSubtask) {
-        for (Subtask subtask : subTasks.values())
-            return newSubtask.getStartTime().isEqual(subtask.getStartTime());
-        return false;
+    @Override
+    public int getEpicDuration(int id) {
+        ArrayList<Subtask> subtasks = getCurrentEpicSubTasks(id);
+        int duration = 0;
+        if (subtasks != null) {
+            for (Subtask sub : subtasks) {
+                duration += sub.getDuration();
+            }
+        }
+        return duration;
     }
-
 }
