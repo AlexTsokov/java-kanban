@@ -18,6 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
+        prioritizedTasks.clear();
         prioritizedTasks.addAll(getTasks());
         prioritizedTasks.addAll(getSubTasks());
         return prioritizedTasks;

@@ -6,6 +6,10 @@ import kanban.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Set;
+import com.google.gson.JsonArray; // описывает JSON-массив
+import com.google.gson.JsonElement; // описывает любой тип данных JSON
+import com.google.gson.JsonObject; // описывает JSON-объект
+import com.google.gson.JsonParser; // разбирает JSON-документ на элементы
 
 public interface TaskManager {
 

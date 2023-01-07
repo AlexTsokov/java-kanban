@@ -72,7 +72,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 task.getStatus() + "," + task.getDetail() + "," + task.getStartTime() + "," + task.getDuration();
     }
 
-    private void save() {
+    protected void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
 
             bufferedWriter.write("id, type, name, status, description, start time, duration, epicID");
