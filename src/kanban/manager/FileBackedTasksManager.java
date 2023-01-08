@@ -3,14 +3,15 @@ package kanban.manager;
 import kanban.tasks.*;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final File file;
+    private File file;
+    private URI uri;
     public List<Integer> restoredHistory = new ArrayList<>();
 
     public static FileBackedTasksManager getDefaultFile() {
@@ -19,6 +20,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public FileBackedTasksManager(File file) {
         this.file = file;
+    }
+
+    public FileBackedTasksManager(URI uri) {
+        this.uri = uri;
     }
 
     public File getFile() {
@@ -183,5 +188,4 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         return history;
     }
-
 }

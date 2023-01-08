@@ -4,9 +4,7 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import kanban.manager.FileBackedTasksManager;
 import kanban.manager.Managers;
 import kanban.manager.TaskManager;
 import kanban.tasks.Epic;
@@ -15,9 +13,7 @@ import kanban.tasks.Task;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -70,13 +66,18 @@ public class HttpTaskServer {
                         sendText(httpExchange, response);
                         break;
                     }
+                    if (Pattern.matches("^/tasks/history$", path)) {
+                        String response = gson.toJson(taskManager.getHistoryManager().getHistory());
+                        sendText(httpExchange, response);
+                        break;
+                    }
                     if (Pattern.matches("^/tasks/task/\\d+$", path)) {
                         String pathId = path.replaceFirst("/tasks/task/", "");
                         int id = parsePathId(pathId);
                         if (id != -1) {
-                        String response = gson.toJson(taskManager.getTask(id));
-                        sendText(httpExchange, response);
-                        break;
+                            String response = gson.toJson(taskManager.getTask(id));
+                            sendText(httpExchange, response);
+                            break;
                         }
                     }
                     if (Pattern.matches("^/tasks/epic/\\d+$", path)) {
@@ -211,7 +212,6 @@ public class HttpTaskServer {
         h.sendResponseHeaders(200, resp.length);
         h.getResponseBody().write(resp);
     }
-
 
     public static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
 

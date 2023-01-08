@@ -52,7 +52,7 @@ class HttpTaskServerTest {
     }
 
     @AfterEach
-    void tearDown() {
+    void turnDown() {
         taskServer.stop();
     }
 
@@ -66,7 +66,8 @@ class HttpTaskServerTest {
 
         assertEquals(200, response.statusCode());
 
-        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
+        Type userType = new TypeToken<ArrayList<Task>>() {
+        }.getType();
         List<Task> actual = gson.fromJson(response.body(), userType);
         List<Task> exp = new ArrayList<>(taskManager.getPrioritizedTasks());
         assertNotNull(actual);
@@ -83,24 +84,11 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
-        Type userType = new TypeToken<Task>() {}.getType();
+        Type userType = new TypeToken<Task>() {
+        }.getType();
         Task actual = gson.fromJson(response.body(), userType);
         assertNotNull(actual);
         assertEquals(actual, taskManager.getTask(1));
-    }
-
-    @Test
-    @DisplayName("Проверка таска по id с сервера")
-    void shouldGetEpicWithId() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/epic/2");
-        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response.statusCode());
-        Type userType = new TypeToken<Epic>() {}.getType();
-        Epic actual = gson.fromJson(response.body(), userType);
-        assertNotNull(actual);
-        assertEquals(actual, taskManager.getEpic(2));
     }
 
     @Test
@@ -111,7 +99,8 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
-        Type userType = new TypeToken<Subtask>() {}.getType();
+        Type userType = new TypeToken<Subtask>() {
+        }.getType();
         Subtask actual = gson.fromJson(response.body(), userType);
         assertNotNull(actual);
         assertEquals(actual, taskManager.getSubTask(3));

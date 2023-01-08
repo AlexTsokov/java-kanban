@@ -5,10 +5,8 @@ import com.google.gson.*;
 import kanban.Http.HttpTaskServer;
 
 import java.io.File;
-import java.lang.reflect.Type;
-import java.time.Instant;
+import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 public class Managers extends InMemoryHistoryManager {
 
@@ -25,10 +23,13 @@ public class Managers extends InMemoryHistoryManager {
         return new FileBackedTasksManager(new File("src/resources/tasks.csv"));
     }
 
+    public static HttpTaskManager getDefaultHttpManager() {
+        return new HttpTaskManager(URI.create("http://localhost:8078/"));
+    }
+
     public static Gson getGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new HttpTaskServer.LocalDateTimeAdapter());
         return gsonBuilder.create();
     }
-
 }

@@ -1,5 +1,6 @@
 package kanban.Http;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -7,12 +8,12 @@ import java.net.http.HttpResponse;
 
 public class KVTaskClient {
 
-    private final String url;
+    private URI url;
     private final String apiToken;
 
-    public KVTaskClient() {
-        url = "http://localhost:8078/";
-        apiToken = register(url);
+    public KVTaskClient(URI url) {
+        this.url = url;
+        apiToken = register(url.toString());
     }
 
     private String register(String url) {
@@ -29,7 +30,7 @@ public class KVTaskClient {
         }
     }
 
-    public void save(String key, String value) {
+    public void put(String key, String value) {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -40,5 +41,18 @@ public class KVTaskClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String load(String key) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "load/" + key + "?API_TOKEN=" + apiToken))
+                .GET()
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Данные не найдены");
+        }
+        return response.body();
     }
 }

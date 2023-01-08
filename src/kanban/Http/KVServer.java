@@ -3,13 +3,13 @@ package kanban.Http;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import kanban.manager.Managers;
 
 public class KVServer {
     public static final int PORT = 8078;
@@ -23,11 +23,6 @@ public class KVServer {
         server.createContext("/register", this::register);
         server.createContext("/save", this::save);
         server.createContext("/load", this::load);
-    }
-
-    public static void main(String[] args) throws IOException {
-        KVServer kvServer = new KVServer();
-        kvServer.start();
     }
 
     private void load(HttpExchange h) throws IOException {
@@ -47,7 +42,9 @@ public class KVServer {
                 }
                 h.sendResponseHeaders(200, 0);
                 String response = data.get(key);
-                sendText(h, response);
+                try (OutputStream outputStream = h.getResponseBody()) {
+                    outputStream.write(response.getBytes(UTF_8));
+                }
             } else {
                 System.out.println("/load ждёт GET-запрос, а получил: " + h.getRequestMethod());
                 h.sendResponseHeaders(405, 0);
