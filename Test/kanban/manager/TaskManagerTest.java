@@ -29,7 +29,7 @@ public abstract class TaskManagerTest<T extends TaskManager> { // Все общ�
     }
 
     protected void initEpicWithSubtasks() {
-        epic1 = new Epic("Попить чай", "Приготовить чай и выпить его", NEW);
+        epic1 = new Epic("Попить чай", "Приготовить чай и выпить его", NEW, "2021-12-20T23:00:00",60);
         subtask1 = new Subtask("Заварка", "Заварить заварку в чайничке", NEW, "2021-12-20T23:00:00",60,1);
         subtask2 = new Subtask("Сахар", "Положить сахар и размешать", NEW, "2021-12-21T21:00:00",60,1);
         final int epic1Id = taskManager.addNewEpic(epic1);
@@ -155,7 +155,7 @@ public abstract class TaskManagerTest<T extends TaskManager> { // Все общ�
     @Test
     @DisplayName("Проверка статуса Эпика без подзадач")
     void checkStatusOnEpicWithoutSubTasks() {
-        Epic epicWithoutSubtasks = new Epic("Попить чай", "Приготовить чай и выпить его", NEW);
+        Epic epicWithoutSubtasks = new Epic("Попить чай", "Приготовить чай и выпить его", NEW, "2021-12-20T23:00:00", 60);
         taskManager.addNewEpic(epicWithoutSubtasks);
         taskManager.updateEpicStatus(epicWithoutSubtasks.getId());
         Assertions.assertEquals(epicWithoutSubtasks.getStatus(), NEW);

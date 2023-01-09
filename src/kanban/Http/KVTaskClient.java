@@ -1,5 +1,7 @@
 package kanban.Http;
 
+import kanban.manager.ManagerSaveException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -37,9 +39,12 @@ public class KVTaskClient {
                     .uri(URI.create(url + "save/" + key + "?API_TOKEN=" + apiToken))
                     .POST(HttpRequest.BodyPublishers.ofString(value))
                     .build();
-            httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                System.out.println("Сервер не вернул данные. Код состояния: " + response.statusCode());
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ManagerSaveException(e);
         }
     }
 
@@ -51,7 +56,7 @@ public class KVTaskClient {
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
-            throw new RuntimeException("Данные не найдены");
+            throw new ManagerSaveException("Данные не найдены");
         }
         return response.body();
     }

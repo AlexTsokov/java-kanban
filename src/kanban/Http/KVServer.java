@@ -33,6 +33,7 @@ public class KVServer {
                 h.sendResponseHeaders(403, 0);
                 return;
             }
+            String response = null;
             if ("GET".equals(h.getRequestMethod())) {
                 String key = h.getRequestURI().getPath().substring("/load/".length());
                 if (key.isEmpty()) {
@@ -41,13 +42,14 @@ public class KVServer {
                     return;
                 }
                 h.sendResponseHeaders(200, 0);
-                String response = data.get(key);
+                response = data.get(key);
+                h.getResponseHeaders().add("Content-Type", "application/json");
                 try (OutputStream outputStream = h.getResponseBody()) {
                     outputStream.write(response.getBytes(UTF_8));
                 }
             } else {
                 System.out.println("/load ждёт GET-запрос, а получил: " + h.getRequestMethod());
-                h.sendResponseHeaders(405, 0);
+                h.sendResponseHeaders(405, response.getBytes(UTF_8).length);
             }
         } finally {
             h.close();

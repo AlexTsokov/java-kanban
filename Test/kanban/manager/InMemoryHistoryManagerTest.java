@@ -56,8 +56,8 @@ class InMemoryHistoryManagerTest extends TaskManagerTest {
     @DisplayName("Проверка удаления из истории")
     public void taskShouldBeDeletedFromHistory() {
         initTask();
-        taskManager.addNewTask(new Task("name3", "description", NEW));
-        taskManager.addNewTask(new Task("name3", "description", NEW));
+        taskManager.addNewTask(new Task("name3", "description", NEW, "2021-12-20T23:20:21",60));
+        taskManager.addNewTask(new Task("name3", "description", NEW, "2021-12-20T23:20:21",60));
         taskManager.getTask(1);
         taskManager.getTask(2);
         taskManager.getTask(3);

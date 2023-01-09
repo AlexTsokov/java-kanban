@@ -57,4 +57,12 @@ public class InMemoryHistoryManager implements HistoryManager {
         return getTasks();
     }
 
+    public List<Integer> getHistoryIds() {
+        List<Integer> ids = new ArrayList<>();
+        for (Task task : getTasks()) {
+            ids.add(task.getId());
+        }
+        return ids;
+    }
+
 }
