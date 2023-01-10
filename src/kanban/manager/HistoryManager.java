@@ -9,7 +9,7 @@ public interface HistoryManager {
 
     List<Task> getHistory();
 
-    List<Integer> getHistoryIds();
+    void clear(); // удаление всей истории
 
     void remove(int id); // удаление задачи из просмотра
 

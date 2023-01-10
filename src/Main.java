@@ -20,7 +20,7 @@ public class Main {
         KVServer kvServer = new KVServer();
         kvServer.start();
         URI url = URI.create("http://localhost:8078/");
-        HttpTaskManager manager = Managers.getDefaultHttpManager();
+        HttpTaskManager manager = Managers.getDefaultHttpManager(url,false); // добавил параметр запроса необходимости восстановления
         KVTaskClient kvTaskClient = new KVTaskClient(url);
 
         String jsonTask = gson.toJson(Collections.singletonList(new Task("Уху", "Приготовить суп из пойманной рыбы", TaskStatus.NEW)));
@@ -30,9 +30,8 @@ public class Main {
         manager.addNewEpic(new Epic("Попить чай", "Приготовить чай и выпить его", TaskStatus.NEW, "2021-12-21T23:20:00", 60));
         manager.addNewSubtask(new Subtask("Заварка", "Заварить заварку в чайничке", TaskStatus.NEW, "2021-12-21T23:20:21", 60, 2));
 
-        manager.getTask(1);
-        manager.getTask(1);
-        manager.getTask(1);
+
+        // формируем историю просмотров
         manager.getTask(1);
         manager.getTask(1);
         manager.getEpic(2);
@@ -40,18 +39,35 @@ public class Main {
         manager.getSubTask(3);
 
         // Проверка загрузки с сервера:
-
         System.out.println(kvTaskClient.load("tasks"));
         System.out.println(kvTaskClient.load("epics"));
         System.out.println(kvTaskClient.load("subtasks"));
         System.out.println(kvTaskClient.load("history"));
 
-        // Проверка восстановления состояния с сервера в новый менеджер:
+        // Проверка восстановления с сервера:
+        System.out.println("\nДо удаления:");
+        System.out.println(manager.getTasks());
+        System.out.println(manager.getEpics());
+        System.out.println(manager.getSubTasks());
+        System.out.println(manager.getHistoryManager().getHistory());
 
-        HttpTaskManager manager2 = manager.load();
-        System.out.println(manager2.getTasks());
-        System.out.println(manager2.getEpics());
-        System.out.println(manager2.getSubTasks());
-        System.out.println(manager2.restoredHistory);
+        // Удаляем содержимое менеджера из памяти
+        manager.deleteAnyTypeAllTasks();
+        // После удаления пусто
+        System.out.println("\nПосле удаления:");
+        System.out.println(manager.getTasks().size());
+        System.out.println(manager.getEpics().size());
+        System.out.println(manager.getSubTasks().size());
+        System.out.println(manager.getHistoryManager().getHistory());
+
+        // Восстанавливаем
+        manager.load();
+
+        // Результат восстановления
+        System.out.println("\nПосле восстановления:");
+        System.out.println(manager.getTasks());
+        System.out.println(manager.getEpics());
+        System.out.println(manager.getSubTasks());
+        System.out.println(manager.restoredHistory);
     }
 }

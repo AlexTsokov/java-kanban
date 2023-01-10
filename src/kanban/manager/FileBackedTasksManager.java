@@ -11,8 +11,10 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private File file;
-    private URI uri;
     public List<Integer> restoredHistory = new ArrayList<>();
+
+    public FileBackedTasksManager() {
+    }
 
     public static FileBackedTasksManager getDefaultFile() {
         return new FileBackedTasksManager(new File("src/resources/tasks.csv"));
@@ -23,7 +25,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public FileBackedTasksManager(URI uri) {
-        this.uri = uri;
     }
 
     public File getFile() {

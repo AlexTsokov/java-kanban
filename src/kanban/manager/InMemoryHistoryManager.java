@@ -53,16 +53,15 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public List<Task> getHistory() {
-        return getTasks();
+    public void clear() {
+        customLinkedList.clear();
+        first = null;
+        last = null;
     }
 
-    public List<Integer> getHistoryIds() {
-        List<Integer> ids = new ArrayList<>();
-        for (Task task : getTasks()) {
-            ids.add(task.getId());
-        }
-        return ids;
+    @Override
+    public List<Task> getHistory() {
+        return getTasks();
     }
 
 }

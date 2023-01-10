@@ -41,9 +41,9 @@ public class KVTaskClient {
                     .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                System.out.println("Сервер не вернул данные. Код состояния: " + response.statusCode());
+                throw new ManagerSaveException("Сервер не вернул данные. Код состояния: " + response.statusCode());
             }
-        } catch (Exception e) {
+        } catch (InterruptedException | IOException e) {
             throw new ManagerSaveException(e);
         }
     }

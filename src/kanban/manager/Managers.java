@@ -5,6 +5,7 @@ import com.google.gson.*;
 import kanban.Http.HttpTaskServer;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 
@@ -23,8 +24,8 @@ public class Managers extends InMemoryHistoryManager {
         return new FileBackedTasksManager(new File("src/resources/tasks.csv"));
     }
 
-    public static HttpTaskManager getDefaultHttpManager() {
-        return new HttpTaskManager(URI.create("http://localhost:8078/"));
+    public static HttpTaskManager getDefaultHttpManager(URI uri, boolean load) throws IOException, InterruptedException {
+        return new HttpTaskManager(uri, load);
     }
 
     public static Gson getGson() {
