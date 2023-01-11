@@ -6,11 +6,11 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private int taskId = 0;
+    protected int taskId = 0;
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HashMap<Integer, Subtask> subTasks = new HashMap<>();
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
     public final static Comparator<Task> comparator = Comparator
             .comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder()))
             .thenComparing(Task::getId);
@@ -249,5 +249,15 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         return duration;
+    }
+
+    public void findAndSetMaxId(int id) {
+        if (this.taskId < id) {
+            this.taskId = id;
+        }
+    }
+
+    public int getCurrentTaskId() {
+        return taskId;
     }
 }

@@ -49,20 +49,31 @@ public class HttpTaskManager extends FileBackedTasksManager {
         if (tasks != null) {
             for (Task task : tasks) {
                 this.tasks.put(task.getId(), task);
+                findAndSetMaxId(task.getId());
             }
         }
         if (epics != null) {
             for (Epic epic : epics) {
                 this.epics.put(epic.getId(), epic);
+                findAndSetMaxId(epic.getId());
             }
         }
         if (subTasks != null) {
             for (Subtask subTask : subTasks) {
                 this.subTasks.put(subTask.getId(), subTask);
+                findAndSetMaxId(subTask.getId());
             }
         }
         if (history != null) {
-            restoredHistory = history;
+            for (Integer taskId : history) {
+                if (this.tasks.containsKey(taskId)) {
+                    historyManager.add(this.tasks.get(taskId));
+                } else if (this.epics.containsKey(taskId)) {
+                    historyManager.add(this.epics.get(taskId));
+                } else if (this.subTasks.containsKey(taskId)) {
+                    historyManager.add(this.subTasks.get(taskId));
+                }
+            }
         }
     }
 }

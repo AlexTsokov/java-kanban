@@ -68,6 +68,7 @@ public class Main {
         System.out.println(manager.getTasks());
         System.out.println(manager.getEpics());
         System.out.println(manager.getSubTasks());
-        System.out.println(manager.restoredHistory);
+        System.out.println(manager.getHistoryManager().getHistory());
+        System.out.println("Значение id, с которого пойдет отсчет идентификаторов: " + manager.getCurrentTaskId());
     }
 }
