@@ -26,7 +26,7 @@ public class Main {
         String jsonTask = gson.toJson(Collections.singletonList(new Task("Уху", "Приготовить суп из пойманной рыбы", TaskStatus.NEW)));
         kvTaskClient.put("tasks", jsonTask);
 
-        manager.addNewTask(new Task("Приготовить уху", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2021-12-20T23:20:21", 60));
+        manager.addNewTask(new Task("Приготовить ушицу", "Приготовить суп из пойманной рыбы", TaskStatus.NEW, "2021-12-20T23:20:21", 60));
         manager.addNewEpic(new Epic("Попить чай", "Приготовить чай и выпить его", TaskStatus.NEW, "2021-12-21T23:20:00", 60));
         manager.addNewSubtask(new Subtask("Заварка", "Заварить заварку в чайничке", TaskStatus.NEW, "2021-12-21T23:20:21", 60, 2));
 
